@@ -8,11 +8,8 @@
             
             {% if user.is_authenticated %}
                 <li><a href="{% url 'profile' user.pk %}">Profile</a></li>
-                
-                {% if user.user_type == 'student' %}
-                    <li><a href="">My Events</a></li>
-                
-                {% elif user.user_type == 'teacher' %}
+
+                {% if user.user_type == 'teacher' %}
                     <li><a href="">Manage Events</a></li>
                 
                 {% elif user.user_type == 'admin' %}
@@ -20,8 +17,8 @@
                     <li><a href="">Users</a></li>
                 {% endif %}
                 
-                {% if user.position_type in 'President Adviser' %}
-                    <li><a href="">Organizations</a></li>
+                {% if user.position in 'President Adviser' %}
+                    <li><a href="{% url "org_view" %}">Organizations</a></li>
                 {% endif %}
                 
                 {% include './logout_btn.html' %}

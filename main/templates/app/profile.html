@@ -1,65 +1,111 @@
 {% extends 'base.html' %}
-
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-<div class="max-w-5xl mx-auto p-6 space-y-8">
+<div class="max-w-6xl mx-auto p-8 space-y-10">
 
-    <section>
-        
-    </section>
-
-
+    <!-- Optional top spacing -->
+    <section></section>
 
     <!-- Stats Section -->
     <section>
-        <div class="stats stats-vertical md:stats-horizontal shadow-lg bg-base-100 rounded-lg">
+        <div class="stats shadow-lg bg-base-100 rounded-2xl w-full">
             <!-- Total Attends -->
             <div class="stat">
-                <div class="stat-title">Total Attends</div>
-                <div class="stat-value text-primary text-3xl">{{ total_attends }}</div>
-                <div class="stat-desc text-sm opacity-70">21% more than last month</div>
+                <div class="stat-figure text-primary">
+                    <i data-lucide="calendar-check" class="w-8 h-8"></i>
+                </div>
+                <div class="stat-title text-gray-500">Total Attends</div>
+                <div class="stat-value text-primary text-4xl font-bold">{{ total_attends }}</div>
+                <div class="stat-desc text-sm opacity-70">Events you've participated in</div>
             </div>
 
-            <!-- Page Views -->
+            <!-- Attendance Rate -->
             <div class="stat">
-                <div class="stat-title">Page Views</div>
-                <div class="stat-value text-secondary text-3xl">2.6M</div>
-                <div class="stat-desc text-sm opacity-70">21% more than last month</div>
+                <div class="stat-figure text-secondary">
+                    <i data-lucide="activity" class="w-8 h-8"></i>
+                </div>
+                <div class="stat-title text-gray-500">Attendance Rate</div>
+                <div class="stat-value text-secondary text-4xl font-bold">{{ attendance_rate }}%</div>
+                <div class="stat-desc text-sm opacity-70">Based on all events this year</div>
             </div>
+
+            <!-- Organization -->
+            <div class="stat">
+                <div class="stat-figure text-accent">
+                    <i data-lucide="users" class="w-8 h-8"></i>
+                </div>
+                <div class="stat-title text-gray-500">Organization</div>
+                <div class="stat-value text-accent text-2xl font-semibold">{{ organization }}</div>
+                <div class="stat-desc text-sm opacity-70">Your current organization</div>
+            </div>
+        </div>
+
+        <!-- Recent Attended Events -->
+        <div class="mt-10 bg-base-200 rounded-2xl shadow-md p-6">
+            <div class="flex items-center gap-2 mb-4 border-b border-base-300 pb-2">
+                <i data-lucide="clock" class="w-5 h-5 text-primary"></i>
+                <h2 class="text-2xl font-semibold">Recently Attended Events</h2>
+            </div>
+            <ul class="space-y-2">
+                {% for ea in recent_attended %}
+                    <li class="flex justify-between items-center bg-base-100 rounded-lg p-3 shadow-sm hover:shadow transition">
+                        <span class="font-medium flex items-center gap-2">
+                            <i data-lucide="bookmark" class="w-4 h-4 text-secondary"></i>
+                            {{ ea.event.event_name }}
+                        </span>
+                        <span class="text-sm text-gray-500">{{ ea.event.event_date|date:"M d, Y" }}</span>
+                    </li>
+                {% empty %}
+                    <li class="text-gray-400 italic">No recent events attended.</li>
+                {% endfor %}
+            </ul>
         </div>
     </section>
 
     <!-- Events Attended (Student View) -->
     <section>
-        <h2 class="text-2xl font-semibold mb-4">My Attended Events</h2>
+        <div class="flex items-center gap-2 mb-4 border-b border-base-300 pb-2">
+            <i data-lucide="list" class="w-5 h-5 text-primary"></i>
+            <h2 class="text-2xl font-semibold">My Attended Events</h2>
+        </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for attendance in events %}
-            <div class="card bg-base-200 shadow-md hover:shadow-lg transition-shadow rounded-lg p-4 flex flex-col justify-between">
-                <div>
-                    <h3 class="font-bold text-lg mb-2">{{ attendance.event.event_name }}</h3>
+            {% for attendance in user_events %}
+            <div class="card bg-base-100 shadow-md hover:shadow-xl transition rounded-xl overflow-hidden border border-base-200">
+                <div class="card-body">
+                    <h3 class="card-title text-lg font-semibold mb-2 flex items-center gap-2">
+                        <i data-lucide="calendar" class="w-5 h-5 text-primary"></i>
+                        {{ attendance.event.event_name }}
+                    </h3>
                     <p class="text-sm text-gray-500 mb-1">
+                        <i data-lucide="clock" class="inline-block w-4 h-4 mr-1 text-gray-400"></i>
                         <span class="font-semibold">Date:</span> {{ attendance.event.event_date|date:"M d, Y H:i" }}
                     </p>
                     <p class="text-sm text-gray-500 mb-1">
+                        <i data-lucide="building" class="inline-block w-4 h-4 mr-1 text-gray-400"></i>
                         <span class="font-semibold">Organization:</span> {{ attendance.event.organization_name.org_name }}
                     </p>
-                    <p class="text-sm mb-1">
+                    <div class="mt-3">
                         <span class="badge 
                             {% if attendance.event.event_status == 'Pending' %}badge-warning
                             {% elif attendance.event.event_status == 'Approved' %}badge-success
                             {% else %}badge-error{% endif %}">
                             {{ attendance.event.event_status }}
                         </span>
-                    </p>
+                    </div>
                 </div>
-                <a href="" class="btn btn-sm btn-primary mt-3">View Details</a>
+                <div class="card-actions justify-end bg-base-200 p-3">
+                    <a href="" class="btn btn-primary btn-sm flex items-center gap-1">
+                        <i data-lucide="eye" class="w-4 h-4"></i> View Details
+                    </a>
+                </div>
             </div>
             {% empty %}
-                <p class="text-gray-400 col-span-full">You have not attended any events yet.</p>
+                <p class="text-gray-400 col-span-full italic">You have not attended any events yet.</p>
             {% endfor %}
         </div>
     </section>
 
 </div>
+
 {% endblock %}

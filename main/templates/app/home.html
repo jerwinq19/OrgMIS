@@ -6,64 +6,72 @@
 {% block content %}
 <div class="min-h-screen bg-gradient-to-b from-base-200 to-base-300 py-12">
 
-
-
     <div class="container mx-auto px-4">
-        <h1 class="text-5xl font-bold text-center mb-12 text-primary">
+        <!-- Title -->
+        <h1 class="text-5xl font-bold text-center mb-12 text-primary flex items-center justify-center gap-3">
+        <i data-lucide="calendar" class="w-8 h-8 text-secondary"></i>
         Upcoming Events
         </h1>
 
         {% if events %}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 justify-items-center">
             {% for event in events %}
-            <div
-                class="card card-dash w-96 bg-base-100 shadow-xl hover:shadow-2xl hover:scale-[1.03] transition-all duration-300 border border-base-300"
-            >
-                <!-- Figure (event image or fallback color) -->
-                <figure class="relative h-48 bg-gradient-to-r from-primary to-secondary">
-                <img
-                    src="https://placehold.co/400x200/png"
-                    alt="Event image"
-                    class="w-full h-full object-cover opacity-90"
-                />
-                <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-                    <h2 class="text-2xl font-bold text-white drop-shadow-md text-center px-4">
-                    {{ event.event_name }}
+            <!-- card: ensure overflow-hidden so absolutely-positioned overlays don't escape -->
+            <div class="card w-96 bg-base-100 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-base-300 overflow-hidden">
+                <!-- Figure: relative container so overlay can be absolute -->
+                <figure class="relative h-48">
+                <img src="https://placehold.co/400x200/png" alt="Event image"
+                    class="w-full h-full object-cover" />
+                <!-- overlay (uses bg-black + bg-opacity so it's compatible with CDN Tailwind) -->
+                <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center px-4">
+                    <h2 class="text-2xl font-bold text-white text-center">
+                    <span class="inline-flex items-center gap-2">
+                        <i data-lucide="megaphone" class="w-5 h-5"></i>
+                        {{ event.event_name }}
+                    </span>
                     </h2>
                 </div>
                 </figure>
 
                 <div class="card-body">
-                <div class="space-y-2 text-sm opacity-80">
-                    <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-calendar-days text-primary"></i>
-                    <span><strong>Date:</strong> {{ event.event_date }}</span>
+                    <div class="space-y-3 text-sm opacity-90">
+                        <div class="flex items-center gap-2">
+                        <i data-lucide="calendar" class="w-5 h-5 text-primary"></i>
+                        <span><strong>Date:</strong> {{ event.event_date|date:"M d, Y H:i" }}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                        <i data-lucide="building" class="w-5 h-5 text-secondary"></i>
+                        <span><strong>Organizer:</strong> {{ event.organization_name.org_name }}</span>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-building-columns text-secondary"></i>
-                    <span><strong>Organizer:</strong> {{ event.organization_name }}</span>
+
+                    <div class="divider my-4"></div>
+
+                    <p class="text-sm leading-relaxed text-gray-600">
+                        <i data-lucide="info" class="w-4 h-4 inline-block mr-1"></i>
+                        Be part of <span class="font-semibold">{{ event.organization_name.org_name }}</span>’s event —
+                        <span class="text-primary font-semibold">{{ event.event_name }}</span>. Experience something new!
+                    </p>
+
+                    <div class="card-actions justify-end mt-4">
+                        <a href="{% url 'attend_view' event.pk %}" class="btn btn-primary btn-sm flex items-center gap-2">
+                        <i data-lucide="ticket" class="w-4 h-4"></i>
+                        Attend Now
+                        </a>
                     </div>
-                </div>
-
-                <div class="divider my-3"></div>
-
-                <p class="text-sm leading-relaxed">
-                    Be part of <span class="font-semibold">{{ event.organization_name }}</span>’s event —
-                    <span class="text-primary font-semibold">{{ event.event_name }}</span>. It’s going to be a great experience!
-                </p>
-
-                <div class="card-actions justify-end mt-4">
-                    <a href="{% url "attend_view" event.pk %}" class="btn btn-primary btn-sm">Attend Now</a>
-                </div>
                 </div>
             </div>
             {% endfor %}
         </div>
+
         {% else %}
-        <div class="text-center py-16">
+        <div class="text-center py-20">
+            <i data-lucide="calendar-x" class="w-12 h-12 text-gray-400 mb-4"></i>
             <p class="text-gray-500 text-lg">No events available right now. Check back soon!</p>
         </div>
         {% endif %}
     </div>
 </div>
+
+
 {% endblock %}

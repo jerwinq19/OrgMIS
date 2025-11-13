@@ -7,6 +7,7 @@
     {% comment %} daisy ui {% endcomment %}
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 
 </head>
 <body>
@@ -14,6 +15,32 @@
 
 
     {% block content %} {% endblock %}
+
+        
+    {% if messages %}
+    <div class="fixed top-5 right-5 space-y-2 z-50">
+        {% for message in messages %}
+        <div class="toast">
+            <div class="alert
+                {% if message.tags == 'success' %}alert-success
+                {% elif message.tags == 'info' %}alert-info
+                {% elif message.tags == 'warning' %}alert-warning
+                {% elif message.tags == 'error' %}alert-error
+                {% endif %}">
+                <span>{{ message }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <script>
+        lucide.createIcons();
+
+        setTimeout(() => {
+            document.querySelectorAll('.toast').forEach(el => el.remove());
+        }, 5000);
+    </script>
 
 </body>
 </html>
