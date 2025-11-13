@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto p-6 space-y-8">
+
+    <section>
+        
+    </section>
+
+
+
+    <!-- Stats Section -->
+    <section>
+        <div class="stats stats-vertical md:stats-horizontal shadow-lg bg-base-100 rounded-lg">
+            <!-- Total Attends -->
+            <div class="stat">
+                <div class="stat-title">Total Attends</div>
+                <div class="stat-value text-primary text-3xl">{{ total_attends }}</div>
+                <div class="stat-desc text-sm opacity-70">21% more than last month</div>
+            </div>
+
+            <!-- Page Views -->
+            <div class="stat">
+                <div class="stat-title">Page Views</div>
+                <div class="stat-value text-secondary text-3xl">2.6M</div>
+                <div class="stat-desc text-sm opacity-70">21% more than last month</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Attended (Student View) -->
+    <section>
+        <h2 class="text-2xl font-semibold mb-4">My Attended Events</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for attendance in events %}
+            <div class="card bg-base-200 shadow-md hover:shadow-lg transition-shadow rounded-lg p-4 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold text-lg mb-2">{{ attendance.event.event_name }}</h3>
+                    <p class="text-sm text-gray-500 mb-1">
+                        <span class="font-semibold">Date:</span> {{ attendance.event.event_date|date:"M d, Y H:i" }}
+                    </p>
+                    <p class="text-sm text-gray-500 mb-1">
+                        <span class="font-semibold">Organization:</span> {{ attendance.event.organization_name.org_name }}
+                    </p>
+                    <p class="text-sm mb-1">
+                        <span class="badge 
+                            {% if attendance.event.event_status == 'Pending' %}badge-warning
+                            {% elif attendance.event.event_status == 'Approved' %}badge-success
+                            {% else %}badge-error{% endif %}">
+                            {{ attendance.event.event_status }}
+                        </span>
+                    </p>
+                </div>
+                <a href="" class="btn btn-sm btn-primary mt-3">View Details</a>
+            </div>
+            {% empty %}
+                <p class="text-gray-400 col-span-full">You have not attended any events yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+</div>
+{% endblock %}

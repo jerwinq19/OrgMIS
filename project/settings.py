@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'my_app'
+    'main',
+    'officer'
 ]
 
 MIDDLEWARE = [
@@ -130,7 +131,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # custom configuration
-AUTH_USER_MODEL = "my_app.CustomUser"
+AUTH_USER_MODEL = "main.CustomUser"
 
 # myproject/settings.py
 LOGIN_REDIRECT_URL = 'home_view' # or any other named URL

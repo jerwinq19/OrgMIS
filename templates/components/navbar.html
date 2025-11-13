@@ -5,9 +5,29 @@
     <div class="flex-none">
         <ul class="menu menu-horizontal px-1">
             <li><a href="{% url 'home_view' %}">Home</a></li>
-            <li><a href="{% url 'profile' user.pk %}">Profile</a></li>
-            <li><a>Events</a></li>
-            {% include './logout_btn.html' %}
+            
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' user.pk %}">Profile</a></li>
+                
+                {% if user.user_type == 'student' %}
+                    <li><a href="">My Events</a></li>
+                
+                {% elif user.user_type == 'teacher' %}
+                    <li><a href="">Manage Events</a></li>
+                
+                {% elif user.user_type == 'admin' %}
+                    <li><a href="">Dashboard</a></li>
+                    <li><a href="">Users</a></li>
+                {% endif %}
+                
+                {% if user.position_type in 'President Adviser' %}
+                    <li><a href="">Organizations</a></li>
+                {% endif %}
+                
+                {% include './logout_btn.html' %}
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+            {% endif %}
         </ul>
     </div>
 </div>

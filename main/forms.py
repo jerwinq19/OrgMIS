@@ -9,6 +9,11 @@ from .models import (
 class LoginForm(forms.Form):
     username = forms.CharField(label="Username")
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
+    
+    def clean(self):
+        clean_data = super().clean()
+        print(clean_data)
+        return clean_data
 
 
 class RegisterForm(forms.ModelForm):

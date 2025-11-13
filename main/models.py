@@ -102,7 +102,7 @@ class Events(models.Model):
     buget = models.ForeignKey(Budget, on_delete=models.CASCADE, null=True, blank=True)
     event_status = models.CharField(max_length=20, default="Pending", choices=STATUS_CHOICES)
     organization_name = models.ForeignKey('Organization', on_delete=models.CASCADE)
-    slug_name = models.SlugField(unique=True, max_length=200, blank=True)
+    slug_name = models.SlugField(unique=True, max_length=200, editable=False)
     
     
     def __str__(self):
