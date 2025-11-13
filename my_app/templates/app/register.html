@@ -1,0 +1,10 @@
+<title>This is register</title>
+
+<h1>Register here.</h1>
+
+<form method='POST'>
+    {% csrf_token %}
+    {{ form.as_p}}
+    <button type="submit">submit</button>
+    <a href="{% url "login_view" %}">Go back</a>
+</form>

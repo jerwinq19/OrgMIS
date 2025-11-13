@@ -1,0 +1,13 @@
+<div class="navbar bg-base-100 shadow-sm">
+    <div class="flex-1">
+        <a class="btn btn-ghost text-xl">daisyUI</a>
+    </div>
+    <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+            <li><a href="{% url 'home_view' %}">Home</a></li>
+            <li><a href="{% url 'profile' user.pk %}">Profile</a></li>
+            <li><a>Events</a></li>
+            {% include './logout_btn.html' %}
+        </ul>
+    </div>
+</div>
